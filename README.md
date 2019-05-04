@@ -511,3 +511,103 @@ public class SingleTonPattern {
 	}
 }
 ~~~
+
+### - Command Pattern
+- 커맨드 패턴은 팩토리 패턴과 비슷한 성격을 갖고 있다고 생각한다. 팩토리 패턴은 생성자 부분을 캡슐화 시켰다면, 커맨드 패턴은 실행부분을 캡슐화 시킨게 이점이다.
+- 인터페이스를 상위 객체로 하여, execute(){interface.execute()} 로 하여서 개발자는 가변적인 커맨드를 실행시키는게 재미있다.
+
+7.1. 인터페이스 
+- 간단하게 execute하는 부분밖에 없다.
+
+~~~
+interface Command{
+	public String execute();
+}
+~~~
+
+7.2. 클래스 부분 - 다양한 상태값을 커맨드화시킴.
+- 스태이트 패턴에 착안을 한다면, 어느 정도 비슷한 것 같다.
+
+~~~
+class HotCommand implements Command{
+	@Override
+	public String execute() {
+		return "Temperature is 100.";
+	}	
+}
+
+class ColdCommand implements Command{
+	@Override
+	public String execute() {
+		return "Temperature is -10.";
+	}
+}
+
+class NormalCommand implements Command{
+	@Override
+	public String execute() {
+		return "Temperature is 30.";
+	}
+}
+
+class NoneCommand implements Command{
+	@Override
+	public String execute() {
+		return "Empty Command";
+	}
+}
+~~~
+7.3. 컨트롤러
+- 컨트롤러는 Command를 설정하게 되면, command.execute();에 의해서 다양한 객체가 들어올 수 있도록 처리했고, 이를 통해서 유연한 코드를 작성할 수 있도록 도와준다.
+- 해당 코드에서는 CoffeeController의 물의 온도를 받는 예제를 통해서 이해를 돕는다.
+~~~
+class CoffeeController{
+	Command command;
+	String waterOfTemperature;
+	CoffeeController(){
+		
+	}
+	
+	void setCommand(Command command) {
+		this.command = command;
+	}
+	
+	void executeCommand() {
+		waterOfTemperature = command.execute();
+	}
+	
+	String getWaterOfTemperature(){
+		return waterOfTemperature;
+	}
+}
+~~~
+7.4.메인 코드
+- 커맨드를 다양하게 만든다.
+- 컨트롤러를 만들어서 커맨드를 입히고, 해당 커맨드를 실행하고, 온도를 체크하는 로직이다.
+
+~~~
+public static void main(String[] args) {
+		//다양한 커맨드를 사용하는 것은 상태를 조절하는 것을 의미하기도 한다.
+		Command noneCommand = new NoneCommand();
+		Command normalCommand = new NormalCommand();
+		Command coldCommand = new ColdCommand();
+		Command hotCommand = new HotCommand();
+		
+		CoffeeController coffeeController = new CoffeeController();
+		coffeeController.setCommand(noneCommand);
+		coffeeController.executeCommand();
+		System.out.println(coffeeController.getWaterOfTemperature());
+
+		coffeeController.setCommand(normalCommand);
+		coffeeController.executeCommand();
+		System.out.println(coffeeController.getWaterOfTemperature());
+		
+		coffeeController.setCommand(coldCommand);
+		coffeeController.executeCommand();
+		System.out.println(coffeeController.getWaterOfTemperature());
+		
+		coffeeController.setCommand(hotCommand);
+		coffeeController.executeCommand();
+		System.out.println(coffeeController.getWaterOfTemperature());
+	}
+~~~
