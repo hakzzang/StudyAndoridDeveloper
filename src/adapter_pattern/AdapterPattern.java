@@ -20,10 +20,10 @@ class CoffeeMachineAdapter implements CoffeeMachine{
 	@Override
 	public void makeCoffee() {
 		waterMachine.makeWater();
-		addCoffeeBeans();
+		inputCoffeeBeans();
 	}
 	
-	void addCoffeeBeans() {
+	void inputCoffeeBeans() {
 		System.out.println("change water to coffee!!");
 	}
 }
@@ -34,8 +34,6 @@ class NormalWaterMachine implements WaterMachine{
 		System.out.println("make water");
 	}
 }
-
-
 
 class SuperCoffeeMachine implements CoffeeMachine{
 	@Override
