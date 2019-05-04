@@ -259,3 +259,6 @@ class Gold extends Enchant{
 	}
 }
 ~~~
+
+### - Factory Pattern :
+객체를 생성하는 행위는 변화를 더디게 하는 
