@@ -354,6 +354,8 @@ public class FactoryMethodPattern {
 }
 ~~~
 
+### - SingleTon Pattern
+
 5.1. 인터페이스
 - CoffeeFactory는 해당 팩토리를 상속받는 클래스에서 별도로 CoffeeRecipe에 있는 변수값들을 만들어주도록 하는 매소드를 제공한다.
 - CoffeeRecipe는 모델과 같으며, 다양한 객체에서 CoffeeRecipe를 상속받을 때, Factory로 하여금 변수가 삽입되는 구조를 만들도록 한다.
