@@ -37,15 +37,7 @@ class BrokenDrill extends Drill{
 	}
 }
 
-abstract class Drill{
-	String itemName;
-	
-	public String getItemName() {
-		return itemName;
-	}
-	
-	public abstract double power();
-}
+
 
 class Ruby extends Enchant{
 	Drill drill;
@@ -82,6 +74,16 @@ class Gold extends Enchant{
 		// TODO Auto-generated method stub
 		return drill.power() + 1000.0;
 	}
+}
+
+abstract class Drill{
+	String itemName;
+	
+	public String getItemName() {
+		return itemName;
+	}
+	
+	public abstract double power();
 }
 
 abstract class Enchant extends Drill{
