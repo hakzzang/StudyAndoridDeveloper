@@ -259,3 +259,94 @@ class Gold extends Enchant{
 	}
 }
 ~~~
+
+### - Factory Pattern :
+- 객체를 생성하는 행위는 코드를 작성할 때 유연성을 더디게 한다. 팩토리 패턴을 하는 이유는 값에 따라서, 객체들을 다수 생성해야하는 경우, 해당 코드들을 캡슐화하여 팩토리 패턴으로 묶어서 관리하는 것을 의미한다. 또한 여기에는 팩토리 매소드 패턴과 추상 팩토리 패턴이 있다.
+- 팩토리 매소드 패턴 : abstract class 내부에 create() 매소드를 abstract로 제공하여, 상속받는 클래스에서 create()를 직접 구현해서, 객체를 생성하는 코드를 클래스에 위임하는 패턴이다.
+
+4.1. 팩토리 매소드 패턴 - 추상 클래스 
+- 팩토리 매소드 패턴은 abstract class로 하여금, 베이스가 되는 클래스를 만들게 되고, create를 abstract화 시켜서, 상속을 받게 되는 클래스에서 해당 매소드를 사용하여, 팩토리를 구현시키는 구조이다.
+
+~~~
+abstract class CoffeeMachine{
+	abstract Coffee create(CoffeeType coffeeType);
+}
+~~~
+
+4.2. 팩토리 매소드 패턴 - 클래스
+
+- CoffeeType의 조건에 따라서 클래스 내부에서 객체를 생성하는 구조이다. 간단하게, 생성하는 로직을 캡슐화하여 클래스에 넣어준 것이다.
+
+~~~
+enum CoffeeType{
+	Black, Americano, Tea;
+}
+
+class GoldCoffeeMachine extends CoffeeMachine{
+	@Override
+	Coffee create(CoffeeType coffeeType) {
+		switch(coffeeType) {
+			case Black: 
+				return new BlackCoffee();
+			case Americano:
+				return new AmericanoCoffee();
+			case Tea:
+				return new Tea();
+			default:
+				return new NormalCoffee();
+		}
+	}	
+}
+~~~
+
+4.3. 팩토리 매소드 패턴 - 생성되어지는 객체
+
+- Coffee의 abstract class를 기반으로 각종 커피객체를 생성
+
+~~~
+class NormalCoffee extends Coffee{
+	@Override
+	String getName() {
+		return "MAXAM";
+	}
+}
+
+class BlackCoffee extends Coffee{
+	@Override
+	String getName() {
+		return "BLACK COFFEE";
+	}	
+}
+
+class AmericanoCoffee extends Coffee{
+	@Override
+	String getName() {
+		return "Ame~~Ame~~Ame~~";
+	}	
+}
+
+class Tea extends Coffee{
+	@Override
+	String getName() {
+		return "T...";
+	}	
+}
+
+abstract class Coffee{
+	abstract String getName();
+}
+~~~
+
+4.4. 팩토리 매소드 패턴 - 메인 코드
+
+- 커피머신을 호출한 후에, create매소드에 type인자를 넣어주게 되면 만들어진다. 간단한 구조이다.
+
+~~~
+public class FactoryMethodPattern {
+	public static void main(String[] args) {
+		CoffeeMachine goldCoffeeMachine = new GoldCoffeeMachine();
+		Coffee americano = goldCoffeeMachine.create(CoffeeType.Americano);
+		System.out.println(americano.getName());
+	}
+}
+~~~
