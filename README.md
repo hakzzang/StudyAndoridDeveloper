@@ -41,7 +41,6 @@ interface Window{
 1.3. 추상화된 객체를 상속받는 클래스. 생성자를 통해서 내부에서 사용되는 변수들이 Super,Gole,Beginner등의 속성을 갖게 되며, 이것은 해당 클래스를 가변적으로 사용할 수 있게함. 
 
 
-- Observer Pattern :
 
 ~~~
 class SuperCar extends Car{
@@ -58,4 +57,7 @@ class BeginnerCar extends Car{
 	}
 }
 ~~~
+
+
+- Observer Pattern :
 
