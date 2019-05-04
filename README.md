@@ -421,3 +421,91 @@ public class AbstractFactoryPattern {
 	}
 }
 ~~~
+
+### -싱글톤 패턴
+- 5252... 아까 가장 많이 쓰는 패턴이라는 말은 취소하겠습니다만... 싱글톤 패턴은 정말 많이 사용하는 패턴이며, 단순하지만 복잡한 패턴이다.
+- 안드로이드에서는 프레그먼트의 홀더를 만들거나 DB를 관리하는 객체, 네트워크 객체를 싱글톤으로 만들어서 관리하게 되면 무거운 객체를 여러개 만드는 것을 방지하기에 많은 이점을 가져다 주는 것으로 알고 있다.
+- 하지만, 중요한 것은 멀티 스레드 환경에서 일반적인 싱글톤 생성방법은 위험하다.
+~~~
+Thread 1 : o if(isObjectNull)                     o 객체 생성            
+Thread 2 :                    o if(isObjectNull)             o 객체 생성
+~~~
+- 위와 같이 다중 스레드에서 싱글톤이 여러개 만들어져서 의미를 상실하는 경우를 방지하고자, 스레드를 생성하는 방법을 확실히 알고 있으면 좋다.
+
+
+6.1. 일반적인 싱글톤
+- 일반적으로 객체가 null일 경우, singleTon을 생성하는 로직의 SingleTon 클래스이다.
+- 생성자를 private으로 처리해서 외부에서 new를 통해서 직접 구현을 못 하게 막은 것이 특징이다.
+- 병렬 스레드에서는 해당 싱글톤으로 객체를 생성할 경우에, null check 부분에서 여러 개의 스레드가 들어와서 객체가 생성되는 경우가 있다고 한다.
+- 앱 개발을 하면서 해당 경우를 경험하기는 힘들었지만, 많은 사람들이 알고 있는 현상이기 때문에 싱글톤을 만들 때 정확한 방법을 숙지하고 싶었고, 2번과 3번 방법으로 객체를 생성하면 된다고 한다.
+
+~~~
+class SingleTon1{
+	private static SingleTon1 singleTon;
+	
+	private SingleTon1() {
+		System.out.println("make singleton 1!");
+	}
+	
+	public static SingleTon1 getInstance() {
+		if(singleTon == null) {
+			singleTon = new SingleTon1();
+		}
+		return singleTon;
+	}
+}
+~~~
+6.2. 객체 생성과 함께 하는 싱글톤
+- SingleTon의 인스턴스를 미리 생성하는 코드이다. Adapter에 ArrayList를 미리 생성하더라도 null이 나오지 않는 것과 동일한 것이라고 생각한다.
+- 6.1은 안정성의 문제, 6.3은 속도적인 측면에서 문제가 있다고 하지만, 해당 코드에 대해서 언급은 없다. 시간이 없는 관계로, 기회가 되면 찾아봐야겠다.
+
+~~~
+class SingleTon2{
+	private static SingleTon2 singleTon = new SingleTon2();
+	
+	private SingleTon2() {
+		System.out.println("make singleton 2!!");
+	}
+	
+	public static SingleTon2 getInstance() {
+		return singleTon;
+	}
+}
+~~~
+
+6.3. DCL과 함께 하는 싱글톤
+- synchronized를 통해서 객체가 멀티스레드로부터 접근되는 것을 방지하는 것을 의미한다. 그리고 이전 6.1 코드와 동일하게 싱글톤 객체의 null 체크 후, 객체를 생성하는 로직이다.
+- 해당 코드는 6.1. 코드에 비해서 속도가 느리다고 한다.
+
+~~~
+class SingleTon3{
+	private volatile static SingleTon3 singleTon;
+	
+	private SingleTon3() {
+		System.out.println("make singleton 3!!!");
+	}
+	
+	public static SingleTon3 getInstance() {
+		if(singleTon == null) {
+			synchronized(SingleTon3.class) {
+				if(singleTon == null) {
+					singleTon = new SingleTon3();
+				}
+			}
+		}
+		return singleTon;
+	}
+}
+~~~
+
+6.4. 메인 코드
+
+~~~
+public class SingleTonPattern {
+	public static void main(String[] args) {
+		SingleTon1.getInstance();
+		SingleTon2.getInstance();
+		SingleTon3.getInstance();	
+	}
+}
+~~~
