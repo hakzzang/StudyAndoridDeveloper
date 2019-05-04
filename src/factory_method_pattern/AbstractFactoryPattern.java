@@ -10,7 +10,6 @@ public class AbstractFactoryPattern {
 		blackCoffee = new BlackCoffeeRecipe(houseCoffeeFactory);
 		coffee = blackCoffee.getCoffee();
 		System.out.println("삥뽕~~ : "+coffee);
-		
 	}
 }
 
@@ -26,9 +25,6 @@ class HouseCoffeeFactory implements CoffeeFactory{
 	}	
 }
 
-interface CoffeeFactory{
-	String makeCoffee();
-}
 
 class BlackCoffeeRecipe extends CoffeeRecipe {
 	CoffeeFactory coffeeFactory;
@@ -42,9 +38,12 @@ class BlackCoffeeRecipe extends CoffeeRecipe {
 	}
 }
 
+interface CoffeeFactory{
+	String makeCoffee();
+}
+
 abstract class CoffeeRecipe{
 	String coffee;
 	
 	abstract String getCoffee();
 }
-
