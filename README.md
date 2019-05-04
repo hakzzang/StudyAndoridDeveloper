@@ -158,3 +158,102 @@ class CCTVManager implements DisplayInterface , Observer{
 }
 ~~~
 
+
+### - Decorator Pattern :
+해당 패턴은 new ClassOne(new ClassTwo(new ClassThree()));와 같은 패턴을 통해서 추가적인 값을 얻어내는 패턴입니다. 해당 예제에서는 Drill을 통해서 예제를 만들었는데, SuperDrill + Ruby + Gold로 드릴을 강화해서 값을 축적하는 로직입니다.
+
+3.1. 추상 클래스
+
+- 추상 클래스를 통해서 기본적인 클래스 틀을 만든다.
+- Drill에서는 itemName의 값을 얻어옵니다.
+- power()나 getItemName() 매소드를 통해서 상속받는 클래스에서 해당 매소드를 구현하고, 임의로 커스텀을 하도록 유도한다.
+
+~~~
+
+abstract class Drill{
+	String itemName;
+	
+	public String getItemName() {
+		return itemName;
+	}
+	
+	public abstract double power();
+}
+
+abstract class Enchant extends Drill{
+	public abstract String getItemName();
+}
+~~~
+
+3.2. 구현된 클래스
+
+- SuperDrill는 근본이 되는 객체로, 특정 값(itemName, power)들을 고유적으로 갖고 있다.
+- BorkenDrill는 근본이 되는 객체로, 특정 값(itemName, power)들을 고유적으로 갖고 있다.
+- Ruby는 Drill들을 받게 되어, 해당 값을 축적해서 값을 쌓는 객체이다.
+- Gold는 Drill들을 받게 되어, 해당 값을 축적해서 값을 쌓는 객체이다.
+
+그래서, 구조는 SuperDrill이 먼저 만들어진다.
+SuperDrill superDrill -> superDrill = Ruby(superDrill); -> superDrill = Gold(superDrill);로 해서 값이 계속해서 데코레이트 되게 된다.
+~~~
+class SuperDrill extends Drill{
+	SuperDrill(){
+		itemName ="Super Drill::";
+	}
+	
+	@Override
+	public double power() {
+		return 100;
+	}
+}
+
+class BrokenDrill extends Drill{
+	BrokenDrill(){
+		itemName = "Broken Drill::";
+	}
+
+	@Override
+	public double power() {
+		// TODO Auto-generated method stub
+		return 1;
+	}
+}
+
+
+
+class Ruby extends Enchant{
+	Drill drill;
+	Ruby(Drill drill){
+		this.drill = drill;
+	}
+	
+	@Override
+	public String getItemName() {
+		// TODO Auto-generated method stub
+		return drill.getItemName() +"루비::";
+	}
+
+	@Override
+	public double power() {
+		// TODO Auto-generated method stub
+		return drill.power() + 200.0 ;
+	}
+	
+}
+
+class Gold extends Enchant{
+	Drill drill;
+	Gold(Drill drill){
+		this.drill = drill;
+	}
+	@Override
+	public String getItemName() {
+		// TODO Auto-generated method stub
+		return drill.getItemName() +"골드::";
+	}
+	@Override
+	public double power() {
+		// TODO Auto-generated method stub
+		return drill.power() + 1000.0;
+	}
+}
+~~~
