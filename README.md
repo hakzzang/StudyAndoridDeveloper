@@ -2,8 +2,8 @@
 src 폴더에서 디자인패턴을 확인할 수 있음.
 
 ### - Delegate pattern: 
-델리게이트 패턴은 추상화가 인터페이스 객체를 갖음으로 인해, 구현된 클래스를 인터페이스에 집어 넣어 다양하게 객체를 사용할 수 있었다.
-
+- 델리게이트 패턴은 추상화가 인터페이스 객체를 갖음으로 인해, 구현된 클래스를 인터페이스에 집어 넣어 다양하게 객체를 사용할 수 있었다.
+- 특징 : 상속을 받는 대신, 행동을 부여받음으로 인해서 객체에서 인터페이스를 통해서 원하는 행동을 할 수 있도록 유도하는 패턴.  
 1.1. 추상화 클래스로부터 인터페이스 객체를 받음. 이 때, 인터페이스를 상속받는 클래스가 들어오기 때문에, 가변적인 클래스의 행위를 처리할 수 있음.
 ~~~
 abstract class Car{
@@ -60,7 +60,8 @@ class BeginnerCar extends Car{
 
 
 ### - Observer Pattern :
-5252... 옵저버 패턴은 가장 많이 보는 디자인패턴이 아닐지도...? 안드로이드 프로젝트를 하다 보면 RxJava, LiveData 등에서 사용되어지는 옵저버패턴은 Subject가 Observer들에게 데이터를 제공해주면, Observer들은 해당 데이터를 가공하는 역할을 한다.
+- 5252... 옵저버 패턴은 가장 많이 보는 디자인패턴이 아닐지도...? 안드로이드 프로젝트를 하다 보면 RxJava, LiveData 등에서 사용되어지는 옵저버패턴은 Subject가 Observer들에게 데이터를 제공해주면, Observer들은 해당 데이터를 가공하는 역할을 한다.
+- 특징 : Subject로 하여, 옵저버를 등록해서 갖고 있으며, Subject는 옵저버에게 데이터를 전달하고, 옵저버는 받은 데이터를 처리하는 패턴.
 
 2.1. Interface 소개
 
@@ -160,7 +161,8 @@ class CCTVManager implements DisplayInterface , Observer{
 
 
 ### - Decorator Pattern :
-해당 패턴은 new ClassOne(new ClassTwo(new ClassThree()));와 같은 패턴을 통해서 추가적인 값을 얻어내는 패턴입니다. 해당 예제에서는 Drill을 통해서 예제를 만들었는데, SuperDrill + Ruby + Gold로 드릴을 강화해서 값을 축적하는 로직입니다.
+- 해당 패턴은 new ClassOne(new ClassTwo(new ClassThree()));와 같은 패턴을 통해서 추가적인 값을 얻어내는 패턴입니다. 해당 예제에서는 Drill을 통해서 예제를 만들었는데, SuperDrill + Ruby + Gold로 드릴을 강화해서 값을 축적하는 로직입니다.
+- 특징 : 정형화된 객체가 있을 경우, 데코레이터 패턴을 통해서 해당 객체의 값을 축적하거나, 더 용이하게 확장할 수 있는 패턴.
 
 3.1. 추상 클래스
 
