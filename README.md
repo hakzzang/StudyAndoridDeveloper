@@ -611,3 +611,82 @@ public static void main(String[] args) {
 		System.out.println(coffeeController.getWaterOfTemperature());
 	}
 ~~~
+
+### -Adapter Pattern
+- 자주 사용하는 패턴 중 하나이다. 리사이클러뷰 어댑터를 통해서 리사이클러뷰의 규격에 맞게 ArrayList를 가공하는 객체로 많이 사용했다.
+- 이와 같이 특정 객체의 속성을 뽑아내서, 사용하려는 객체의 속성에 맞게 재단하는 용도로 사용하는 패턴이다.
+
+8.1. 인터페이스
+- 우리는 WaterMachine을 상속받는 클래스를 CoffeeMachine의 규격에 맞게 바꿀 것이다.
+- 해당 인터페이스는 이처럼 WaterMachine과 CoffeeMachine을 상속시켜, 클래스를 만드는 용도로 사용한다.
+
+~~~
+interface WaterMachine{
+	void makeWater();
+}
+
+interface CoffeeMachine{
+	void makeCoffee();
+}
+~~~
+
+8.2. 객체 클래스
+- 위의 인터페이스의 규격에 맞게 클래스가 만들어지게 되고, NormalWaterMachine과 SuperCoffeeMachine이 만들어졌다.
+- 우리는 NormalWaterMachine을 어댑터에 넣을 것이다.
+
+~~~
+class NormalWaterMachine implements WaterMachine{
+	@Override
+	public void makeWater() {
+		System.out.println("make water");
+	}
+}
+
+class SuperCoffeeMachine implements CoffeeMachine{
+	@Override
+	public void makeCoffee() {
+		System.out.println("make cofee");
+	}
+}
+~~~
+
+8.3. 어댑터 클래스
+- 어댑터 클래스에서 WaterMachine을 받아서, 해당 클래스를 목적에 맞게 재단한다.
+- 우리는 간단하게 inputCoffeeBeans(); 을 통해서 커피로 바꾼다는 로직을 가정한다.
+
+~~~
+
+class CoffeeMachineAdapter implements CoffeeMachine{
+	WaterMachine waterMachine;
+	CoffeeMachineAdapter(WaterMachine waterMachine){
+		this.waterMachine = waterMachine;
+	}
+	
+	@Override
+	public void makeCoffee() {
+		waterMachine.makeWater();
+		addCoffeeBeans();
+	}
+	
+	void inputCoffeeBeans() {
+		System.out.println("change water to coffee!!");
+	}
+}
+~~~
+
+8.4. 메인 코드
+- CoffeeMachineAdapter(waterMachine)을 넣어줌으로, 우리는 WaterMachine을 통해서 makeCoffee() 매소드를 실행시킬 수 있게 했다.
+- 이에 대해서는 WaterMachine을 어댑터에 집어 넣게 되면, CoffeeMachine의 목적에 맞게 코드를 재단한다고 생각하자.
+
+~~~
+public class AdapterPattern {
+	public static void main(String[] args) {
+		WaterMachine waterMachine = new NormalWaterMachine();
+		waterMachine.makeWater();
+		CoffeeMachine coffeeMachine = new SuperCoffeeMachine();
+		coffeeMachine.makeCoffee();
+		CoffeeMachine coffeeMahcineAdapter = new CoffeeMachineAdapter(waterMachine);
+		coffeeMahcineAdapter.makeCoffee();
+	}
+}
+~~~
