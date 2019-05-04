@@ -123,7 +123,6 @@ class CCTV implements Subject{
 
 	@Override
 	public void notifyObserverData() {
-		// TODO Auto-generated method stub
 		for(Observer cctvObserver : cctvObserverArray) {
 			cctvObserver.sendData(peopleName, behavior);
 		}
@@ -131,7 +130,6 @@ class CCTV implements Subject{
 
 	@Override
 	public void watchPeople(String peopleName, String behavior) {
-		// TODO Auto-generated method stub
 		this.peopleName = peopleName;
 		this.behavior = behavior;
 		notifyObserverData();
@@ -147,7 +145,6 @@ class CCTVManager implements DisplayInterface , Observer{
 	}
 	@Override
 	public void sendData(String peopleName, String behavior) {
-		// TODO Auto-generated method stub
 		this.peopleName = peopleName;
 		this.behavior = behavior;
 		display();
@@ -155,7 +152,6 @@ class CCTVManager implements DisplayInterface , Observer{
 
 	@Override
 	public void display() {
-		// TODO Auto-generated method stub
 		System.out.println(String.valueOf(cctvIndex)+"번 cctv가 포착했습니다.\n"+peopleName +"님이 "+behavior+"을 하고 있습니다.");
 	}
 	
