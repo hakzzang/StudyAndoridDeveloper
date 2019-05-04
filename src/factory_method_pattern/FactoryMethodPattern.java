@@ -25,7 +25,7 @@ class GoldCoffeeMachine extends CoffeeMachine{
 			default:
 				return new NormalCoffee();
 		}
-	}	
+	}
 }
 
 abstract class CoffeeMachine{
