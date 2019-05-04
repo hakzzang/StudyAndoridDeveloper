@@ -1,4 +1,4 @@
-package design_pattern;
+package delegate_pattern;
 
 //2019.05.xx 18:14 : 너무 졸리다.
 //책 다 읽고, 예제파일 만들려고 한다...
