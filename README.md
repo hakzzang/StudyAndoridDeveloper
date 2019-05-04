@@ -690,3 +690,79 @@ public class AdapterPattern {
 	}
 }
 ~~~
+
+### -Template Method Pattern
+- 해당 패턴은 abstract class의 성질을 이용해서 공통적인 코드는 유지한 채, 상이한 코드를 각자의 클래스에서 구현해서 코드를 절약하는 것이 특징이다.
+- 또 다른 특징으로는 hook을 구현해서, abstract를 상속받는 클래스의 유연성을 한 단계 높일 수 있는 것이 특징이다.
+
+9.1. abstract class
+- 해당 패턴은 abstract의 성질을 가장 잘 이용하는 사례인 것 같다. 각 클래스에서 구현해야 하는 내용은 abstract method()로 선언을 하고, 그렇지 않을 경우에는 abstract class 내부에서 구현해준다.
+- 특징이 있다면, abstract에서는 구현한 코드 또한, Overrdie할 수 있는 성질을 이용하여 hook을 짜는 것인데, 해당 예제에서는 isPremium이라는 객체를 hook으로 하여 코드를 처리하고 있다.
+- 코드에 대한 설명은 Machine이라는 base 클래스를 만들고, coldWater를 제공해주는 클래스는 동일시 하고, 어른과 일반 사람들이 사용하는 정수기로 나눠서 hotWater의 코드를 상이하게 제공하도록 짰으며, isPremium을 통해서 정수기의 프리미엄을 체크하는 코드를 제공할 것이다.
+
+~~~
+abstract class Machine{
+	abstract void makeHotWater();
+	void makeColdWater() {
+		System.out.println("Temerature is -10.");
+	}
+	
+	boolean isPremium() {
+		return true;
+	}
+}
+~~~
+
+9.2. 구현 클래스
+- WaterMachineForChild, WaterMachie을 통해서 어린이와 일반 사람이 사용하는 코드를 작성했으며, hook을 보여주기 위해서 일반 WaterMachine에서는 isPremium을 Override해서 재정의 해서 유연하게 코드를 작성하는 것을 보여주는게 특징이다.
+
+~~~
+class WaterMachineForChild extends Machine{
+	WaterMachineForChild(){
+		
+	}
+	
+	@Override
+	void makeHotWater() {
+		if(isPremium()) {
+			System.out.println("clear water...");
+		}
+		System.out.println("Temerature is 60.");
+	}
+}
+
+class WaterMachine extends Machine{
+	boolean isPremium;
+	WaterMachine(boolean isPremium){
+		this.isPremium = isPremium;
+	}
+	
+	@Override
+	void makeHotWater() {
+		if(isPremium()) {
+			System.out.println("clear water...");
+		}
+		System.out.println("Temerature is 100.");
+	}
+	
+	@Override
+	public boolean isPremium() {
+		return isPremium;
+	}
+}
+~~~
+
+9.3. 메인 코드
+
+- waterMachine을 생성할 때, boolean값을 전달해서 premiumd을 체크하도록 유도하고, 각자 coldWater와 hotWater를 만드는 코드이다.
+
+public class TemplateMethodPattern {
+	public static void main(String[] args) {
+		Machine waterMachine = new WaterMachine(false);	
+		Machine waterMachineForChild = new WaterMachineForChild();
+		waterMachine.makeColdWater();
+		waterMachine.makeHotWater();
+		waterMachineForChild.makeColdWater();
+		waterMachineForChild.makeHotWater();
+	}
+}
