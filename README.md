@@ -263,6 +263,9 @@ class Gold extends Enchant{
 ### - Factory Pattern :
 - 객체를 생성하는 행위는 코드를 작성할 때 유연성을 더디게 한다. 팩토리 패턴을 하는 이유는 값에 따라서, 객체들을 다수 생성해야하는 경우, 해당 코드들을 캡슐화하여 팩토리 패턴으로 묶어서 관리하는 것을 의미한다. 또한 여기에는 팩토리 매소드 패턴과 추상 팩토리 패턴이 있다.
 - 팩토리 매소드 패턴 : abstract class 내부에 create() 매소드를 abstract로 제공하여, 상속받는 클래스에서 create()를 직접 구현해서, 객체를 생성하는 코드를 클래스에 위임하는 패턴이다.
+- 추상 팩토리 패턴 : 만들어지는 객체에 팩토리를 넣어서, 객체의 변수값들을 직접 만들어주도록 관리하는 구조이다.
+AFactory, BFactory => Coffee(AFacotory) , Coffee(BFactory) => AFactoryCoffee , BFactoryCoffee
+그래서 해당 변수 값들이 Factory에 의해 만들어지는 구조이다.
 
 4.1. 팩토리 매소드 패턴 - 추상 클래스 
 - 팩토리 매소드 패턴은 abstract class로 하여금, 베이스가 되는 클래스를 만들게 되고, create를 abstract화 시켜서, 상속을 받게 되는 클래스에서 해당 매소드를 사용하여, 팩토리를 구현시키는 구조이다.
@@ -347,6 +350,74 @@ public class FactoryMethodPattern {
 		CoffeeMachine goldCoffeeMachine = new GoldCoffeeMachine();
 		Coffee americano = goldCoffeeMachine.create(CoffeeType.Americano);
 		System.out.println(americano.getName());
+	}
+}
+~~~
+
+5.1. 인터페이스
+- CoffeeFactory는 해당 팩토리를 상속받는 클래스에서 별도로 CoffeeRecipe에 있는 변수값들을 만들어주도록 하는 매소드를 제공한다.
+- CoffeeRecipe는 모델과 같으며, 다양한 객체에서 CoffeeRecipe를 상속받을 때, Factory로 하여금 변수가 삽입되는 구조를 만들도록 한다.
+
+~~~
+
+interface CoffeeFactory{
+	String makeCoffee();
+}
+
+abstract class CoffeeRecipe{
+	String coffee;
+	
+	abstract String getCoffee();
+}
+~~~
+
+5.2. 클래스
+
+- CoffeeFactory를 상속받은 Gold,House CoffeeFactory는 변수로 하여금, 자신들만의 값을 만든다.
+- BlackCoffeeRecipe의 생성자에는 CoffeeFactory를 받게 되는데, 이를 통해서 Gold,House등 다양한 CoffeeFactory가 들어오게 되고, getCoffee() 매소드 에서는 팩토리에서 coffee의 종류를 받게 된다.
+
+~~~
+class GoldCoffeeFactory implements CoffeeFactory{
+	public String makeCoffee() {
+		return "GOLD";
+	}	
+}
+
+class HouseCoffeeFactory implements CoffeeFactory{
+	public String makeCoffee() {
+		return "HOUSE";
+	}	
+}
+
+
+class BlackCoffeeRecipe extends CoffeeRecipe {
+	CoffeeFactory coffeeFactory;
+	BlackCoffeeRecipe(CoffeeFactory coffeeFactory){
+		this.coffeeFactory = coffeeFactory;
+	}
+
+	@Override
+	String getCoffee() {
+		return coffeeFactory.makeCoffee() +" BLACK COFFEE";
+	}
+}
+~~~
+
+5.3. 메인 코드
+
+- 간단하게 팩토리를 생성에서 레시피에 팩토리를 넣어주고, 커피의 종류를 확인하는 예제이다.
+
+~~~
+public class AbstractFactoryPattern {
+	public static void main(String[] args) {
+		CoffeeFactory goldCoffeeFactory = new GoldCoffeeFactory();
+		CoffeeFactory houseCoffeeFactory = new HouseCoffeeFactory();
+		CoffeeRecipe blackCoffee = new BlackCoffeeRecipe(goldCoffeeFactory);
+		String coffee = blackCoffee.getCoffee();
+		System.out.println("삥뽕~~ : "+coffee);
+		blackCoffee = new BlackCoffeeRecipe(houseCoffeeFactory);
+		coffee = blackCoffee.getCoffee();
+		System.out.println("삥뽕~~ : "+coffee);
 	}
 }
 ~~~
