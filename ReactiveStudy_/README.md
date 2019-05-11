@@ -25,8 +25,8 @@
 - 람다는 인터페이스를 만들어서 변수를 받기 때문에, 내부 변수를 처리하는 것이 용이하다.
 - 코틀린에서는 클로저를 통해 외부 변수를 변경할 수 있다.
 
-java_closure.png
-kotlin_closure.png
+![java_closure.png](https://github.com/hakzzang/StudyAndoridDeveloper/blob/master/ReactiveStudy_/image/java_closure.png)
+![kotlin_closure.png](https://github.com/hakzzang/StudyAndoridDeveloper/blob/master/ReactiveStudy_/image/kotlin_closure.png)
 
 ### HotObservable :
 - 실행의 권한은 Observable에 있음.
@@ -38,3 +38,5 @@ kotlin_closure.png
 - 실행의 권한은 구독자에 있음.
 - 구독을 하게 되면 처음부터 값을 얻음.
 - 대부분의 rx는 cold이다.
+
+Thanks to 뉙님과 음님에게
