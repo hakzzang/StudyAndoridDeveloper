@@ -23,7 +23,7 @@ void makeItem(ItemFactory itemFactory){
 public List<Item> filterSword(List<Item> items){
   List<Sword> list = new ArrayList();
   for(Item item : items){
-    if(SWORD.equals(item.getKind()){
+    if(SWORD.equals(item.getType()){
       list.add(item);
     }
   }
@@ -35,3 +35,38 @@ public List<Item> filterSword(List<Item> items){
  일반적으로, 코드를 작성할 때, 다양한 변화를 생각하지 않고 작성할 때, 이와 같이 코드를
  작성할 것이다. 우리는 이 코드로부터 조금 더 다양하고, 다양한 변화에 적응하는 코드를
  작성하는 법을 알아보려고 한다.
+ 
+ 1-2. 비교하는 대상을 파라미터화
+  우리는 비교하는 대상인 SWORD를 비교함으로 인해서, 아이템들 중에서, 검을 필터화할 수 있었다.
+  하지만, 검 외에도, 방패, 활, 창등을 검색하기 위해서는 어떻게 해야할까?
+  1-1의 코드에서, SWORD를 비교하는 대신에, 메소드에 weaponType을 넘겨주면, 쉽게 무기의 타입을
+  검사할 수 있다.
+```java
+public List<Item> filterItemsByType(List<Item> items, int weaponType){
+  List<Sword> list = new ArrayList();
+  for(Item item : items){
+    if(weaponType.equals(item.getType()){
+      list.add(item);
+    }
+  }
+  return result;
+}
+```
+ 만약에, 무기의 타입이 아닌, 무기의 희귀도를 필터하려고 하면 어떻게 해야할까?
+  ```java
+public List<Item> filterItemsByUnique(List<Item> items, int unique){
+  List<Sword> list = new ArrayList();
+  for(Item item : items){
+    if(item.getUnique() > unique){
+      list.add(item);
+    }
+  }
+  return result;
+}
+```
+ 그렇게 되면, for문 안의 if구문만 변경되게 된다.그러면 전체적인 구조는 똑같지만, 비교문만 바뀐채 비슷한 의미없는 메소드가 추가된다. 
+ 
+ 
+ 
+ 
+ 
