@@ -96,6 +96,8 @@ public interface ItemPredicate{
   boolean logic(Item item);
 }
 ```
+
+2-1. 전략 디자인 패턴을 활용해서 코드 재활용
 부모 인터페이스를 작성하고 난 후, 해당 인터페이스를 상속받는 클래스를 만들어주자. 이러한 것을 전략 디자인 패턴(StrategyPattern)이라고 한다.
 ``` java
 // filter(RARE, SWORD)
@@ -115,7 +117,20 @@ public class UniqueBowsPredicate implements ItemPredicate{
   }
 }
 ```
-
- 
- 
- 
+``` java
+public List<Item> filterItems(List<Item> items, ItemPredicate itemPredicate){
+  List<Item> result = new ArrayList();
+  for(Item item : items){
+    if(itemPredicate.logic(item)){
+      result.add(item);
+    }
+  }
+  return result;
+}
+```
+스트레지패턴을 활용해서 여러가지 조건에 맞게 필터링 클래스를 만든다. 그러게 되면 넘겨주는 predicate에 따라서, 결과값이 달라지도록 할 수 있다.
+이를 이용해서, 동작을 파라미터화 했다고 할 수 있다.
+``` java
+List<Item> rareSwords = filterItems(items, new RareSwordPredicate());
+List<Item> uniqueBows = filterItems(items, new UniqueBowsPredicate());
+```
