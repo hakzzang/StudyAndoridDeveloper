@@ -18,7 +18,7 @@ void makeItem(ItemFactory itemFactory){
  이해한 바로는, 특정 로직을 어느 정도 추상화시켜서, 해당 메소드를 통해서 어떤 행위를 
 처리하는 것으로 이해했다.위의 로직 중에서, itemFactory.makeItem()이 그러한 구문이다.
 
-1-1. 일반적인 코드로부터 시작하기
+1-1. 일반적인 코드로부터 시작하기 (p69)
 ```java
 public List<Item> filterSword(List<Item> items){
   List<Sword> list = new ArrayList();
@@ -36,7 +36,7 @@ public List<Item> filterSword(List<Item> items){
  작성할 것이다. 우리는 이 코드로부터 조금 더 다양하고, 다양한 변화에 적응하는 코드를
  작성하는 법을 알아보려고 한다.
  
- 1-2. 비교하는 대상을 파라미터화
+ 1-2. 비교하는 대상을 파라미터화 (p70)
   우리는 비교하는 대상인 SWORD를 비교함으로 인해서, 아이템들 중에서, 검을 필터화할 수 있었다.
   하지만, 검 외에도, 방패, 활, 창등을 검색하기 위해서는 어떻게 해야할까?
   1-1의 코드에서, SWORD를 비교하는 대신에, 메소드에 weaponType을 넘겨주면, 쉽게 무기의 타입을
@@ -66,7 +66,56 @@ public List<Item> filterItemsByUnique(List<Item> items, int unique){
 ```
  그렇게 되면, for문 안의 if구문만 변경되게 된다.그러면 전체적인 구조는 똑같지만, 비교문만 바뀐채 비슷한 의미없는 메소드가 추가된다. 
  
+1-3. 비교하는 대상의 파라미터를 모두 합쳐보기(p71)
+```java
+public List<Item> filterItems(List<Item> items, int weaponType, int unique){
+  List<Sword> list = new ArrayList();
+  for(Item item : items){
+    if(item.getUnique() > unique || item.getType().equals(weaponType)){
+      list.add(item);
+    }
+  }
+  return result;
+}
+```
+ 파라미터에는 items, weaponType, unique가 들어간다. 사용되어지는 파라미터를 모두 메소드를 통해서 관리하는 형태이다.
+이리에 둘러 싸인 형국인 마냥, 이와 같은 방법은 하면 안된다고 설명되어져 있다.
+``` java
+List<Item> rareSwords = filterItems(items, SWORD, RARE);
+List<Item> uniqueBows = filterItems(items, BOW, UNIQUE);
+```
+ 이와 같은 코드가 작성된다. 사실 어느정도 깔끔해 보이지만, 어떤 기준으로 잘 정의되지 않는 상황이라면, 해당 코드는 위험하다고 한다.
  
+ 2. 동작 파라미터화 (p72)
+ - 1-3보다 더 유연한 코드가 필요하다.
+ - 참 또는 거짓을 반환하는 함수를 프레디케이트라고 하는데, 그럴 땐, 프레디케이트 인터페이스를 사용하면 된다.
+ 
+ ``` java
+// 부모 인터페이스
+public interface ItemPredicate{
+  boolean logic(Item item);
+}
+```
+부모 인터페이스를 작성하고 난 후, 해당 인터페이스를 상속받는 클래스를 만들어주자. 이러한 것을 전략 디자인 패턴(StrategyPattern)이라고 한다.
+``` java
+// filter(RARE, SWORD)
+public class RareSwordsPredicate implements ItemPredicate{
+  @Override
+  public boolean logic(Item item){
+    return item.getUnique() == RARE && item.getTtpe().equals(SWORD);
+  }
+}
+```
+ ``` java
+// filter(RARE, SWORD)
+public class UniqueBowsPredicate implements ItemPredicate{
+  @Override
+  public boolean logic(Item item){
+    return item.getUnique() == UNIQUE && item.getTtpe().equals(BOW);
+  }
+}
+```
+
  
  
  
