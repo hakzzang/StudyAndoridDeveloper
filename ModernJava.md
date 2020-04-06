@@ -136,7 +136,7 @@ List<Item> uniqueBows = filterItems(items, new UniqueBowsPredicate());
 ```
  나는 기존에 1-2나, 1-3의 방식으로 코드를 많이 작성하곤 하는데, 다양한 형태로 작업을 처리할게 있다면, 스트레지패턴을 활용해서
  동작을 파라미터화하면 좋겠다는 생각이 든다.
-#### 2-2. 익명 클래스를 활용해서 그 때마다 필요한 코드 작성
+#### 2-2. 익명 클래스를 활용해서 동작 파라미터화 코드 작성
  익명 클래스는 이미 만들어놓은 인터페이스를 별다른 클래스를 구현하지 않고, 바로 사용하는 것을 의미한다. 안드로이드에서는 
 setOnClickListener()에서 사용하곤 한다.
 ``` java
@@ -152,10 +152,23 @@ private void test(){
  이와 같이 View.OnClickListener라는 인터페이스를 바로 구현한다. 이를 사용한 것처럼, Predicate를 클래스로 따로 구현하지 않고,
 아래와 같이 편하게 쓸 수 있다.
  ``` java
-List<Item> rareSwords = filterItems(items, new ItemPredicate(){
+List<Item> uniqueBows = filterItems(items, new ItemPredicate(){
   @Override
   public boolean logic(Item item){
     return item.getUnique() == UNIQUE && item.getTtpe().equals(BOW);
   }
 });
+```
+
+#### 2-3. 람다 표현식을 활용해서 동작 파라미터화 코드 작성
+ 안드로이드 스튜디오에서는 setOnClickListener를 2-2의 예제와 같이 구현하게 되면, 람다식으로 변경해서 사용하라고 제안이 들어온다.
+우리는 은연중에, 람다 표현식을 많이 사용했었다.
+```java
+private void test(){
+  button.setOnClickListener((View view) -> clickLogic(view));
+}
+```
+ 위와 같이 람다식을 활용해서, 동작 파라미터화 코드를 더 줄일 수 있다.
+```java
+List<Item> uniqueBows = filterItems(items, (Item item)-> item.getUnique() == UNIQUE && item.getTtpe().equals(BOW));
 ```
